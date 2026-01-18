@@ -20,4 +20,4 @@ jobs:
           pip install poetry
           poetry install --no-interaction --no-ansi
       - name: Run pylint
-        run: pylint $(git ls-files '*.py')
+        run: poetry run pylint --ignore="tests" --recursive=y .
