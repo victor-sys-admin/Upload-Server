@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>File Upload</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="card">
+        <h1>Upload file</h1>
+        <p>Send a file securely to Viktor Mac</p>
+
+        <label class="file-input">
+            <input type="file" id="file">
+            <div>Select a file</div>
+            <div class="file-name" id="file-name">No file selected</div>
+        </label>
+
+        <button id="upload-btn" onclick="upload()" disabled>Upload</button>
+
+        <div class="progress-container" id="progress-container">
+            <div class="progress-bar-bg">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            <div class="progress-text" id="progress-text">0%</div>
+        </div>
+
+        <div class="status" id="status"></div>
+    </div>
+    <script src="{{ url_for('static', filename='upload.js') }}"></script>
+</body>
+
+</html>
