@@ -111,6 +111,21 @@ poetry run coverage html
 
 ---
 
+## Security Disclaimers
+
+* This server does not include authentication or encryption by default.
+* Intended for local network use only.
+* Do not expose to public networks without additional security measures.
+* Use at your own risk. Review the code before production use.
+
+## PyPI / GitHub Best Practices
+
+* Includes pyproject.toml for dependency management and packaging.
+* All source code is under a version-controlled repository.
+* Templates and static assets are in separate folders for clean structure.
+* Tests are included and run with pytest for continuous integration.
+* Linting and security scanning are integrated for safe publishing.
+
 ## License
 
 MIT
