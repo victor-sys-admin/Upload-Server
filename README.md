@@ -118,6 +118,44 @@ poetry run coverage html
 * Do not expose to public networks without additional security measures.
 * Use at your own risk. Review the code before production use.
 
+## Security Note: Binding to `0.0.0.0`
+
+The application explicitly binds to all network interfaces:
+
+```python
+app.run(host="0.0.0.0", port=8000)  # nosec
+```
+
+This triggers a Bandit warning (`B104: hardcoded_bind_all_interfaces`) because binding to `0.0.0.0` can expose a service to unintended networks.
+
+### Why this is intentional
+
+This server is designed to receive files from a **mobile device on the same local network**.
+Binding to `0.0.0.0` is required so the service is reachable from other devices (e.g. a phone) and not limited to `localhost`.
+
+Binding only to `127.0.0.1` would prevent access from external devices and break the primary use case.
+
+### Risk assessment
+
+* ✔ Intended for **local network use only**
+* ❌ No authentication or encryption by default
+* ❌ Not hardened for public exposure
+
+### Mitigations and user responsibility
+
+* Users should **run this server only on trusted local networks**
+* Firewall rules should restrict access as needed
+* The server **must not be exposed to the public internet**
+* Advanced users may override the bind address if required
+
+The Bandit warning is therefore explicitly suppressed using `# nosec`, as this behavior is **by design and documented**.
+
+---
+
+**Summary:**
+This is a conscious trade-off between usability and security, acceptable for a local-only utility but inappropriate for public-facing deployments.
+
+
 ## PyPI / GitHub Best Practices
 
 * Includes pyproject.toml for dependency management and packaging.
