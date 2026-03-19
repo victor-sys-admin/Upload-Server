@@ -1,7 +1,9 @@
 import io
 import os
+import sys
 import pytest
-from upload_server import app
+from unittest.mock import patch
+from upload_server.__main__ import app, parse_args, main
 
 @pytest.fixture
 def client():
@@ -56,3 +58,23 @@ def test_path_traversal_upload(client):
         content = f.read()
 
     assert content == b"malicious content"
+
+
+def test_parse_args():
+    test_args = ["__main__.py", "--port", "9090", "--host", "127.0.0.1", "--upload-dir", "custom", "--message", "Test Msg"]
+    with patch.object(sys, 'argv', test_args):
+        args = parse_args()
+        assert args.port == 9090
+        assert args.host == "127.0.0.1"
+        assert args.upload_dir == "custom"
+        assert args.message == "Test Msg"
+
+
+@patch("upload_server.__main__.app.run")
+def test_main(mock_run):
+    test_args = ["__main__.py", "--port", "8080", "--host", "0.0.0.0", "--upload-dir", "uploads", "--message", "Hello"]
+    with patch.object(sys, 'argv', test_args):
+        main()
+        mock_run.assert_called_once_with(host="0.0.0.0", port=8080)
+        assert app.config['UPLOAD_DIR'] == "uploads"
+        assert app.config['CUSTOM_MESSAGE'] == "Hello"
