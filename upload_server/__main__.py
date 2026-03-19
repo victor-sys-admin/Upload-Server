@@ -55,8 +55,12 @@ def parse_args():
                     help="Custom message to display on the upload page")
     return parser.parse_args()
 
-if __name__ == "__main__":
+def main():
+    """Main application entry point"""
     args = parse_args()
     app.config['UPLOAD_DIR'] = args.upload_dir
     app.config['CUSTOM_MESSAGE'] = args.message
     app.run(host=args.host, port=args.port)
+
+if __name__ == "__main__":  # pragma: no cover
+    main()
