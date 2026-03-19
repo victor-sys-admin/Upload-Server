@@ -14,7 +14,7 @@
         <p>{{ message }}</p>
 
         <label class="file-input">
-            <input type="file" id="file">
+            <input type="file" id="file" multiple>
             <div>Select a file</div>
             <div class="file-name" id="file-name">No file selected</div>
         </label>
@@ -22,11 +22,14 @@
         <button id="upload-btn" onclick="upload()" disabled>Upload</button>
 
         <div class="progress-container" id="progress-container">
+            <div style="font-size: 13px; font-weight: 500; margin-bottom: 5px;">Overall Progress</div>
             <div class="progress-bar-bg">
                 <div class="progress-bar" id="progress-bar"></div>
             </div>
             <div class="progress-text" id="progress-text">0%</div>
         </div>
+
+        <div id="file-list"></div>
 
         <div class="status" id="status"></div>
     </div>

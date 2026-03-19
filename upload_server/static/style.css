@@ -122,3 +122,35 @@ button:disabled {
     font-size: 14px;
     text-align: center;
 }
+
+.file-item {
+    margin-top: 16px;
+    padding: 10px;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+}
+
+.file-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.file-name-text {
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 80%;
+}
+
+.file-status-icon {
+    color: var(--muted);
+    font-weight: bold;
+}
+
+.file-status-icon.success {
+    color: #10b981;
+}
