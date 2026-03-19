@@ -28,12 +28,16 @@ def setup_upload_dir():
 def upload():
     """Defining route to upload files"""
     if request.method == "POST":
-        file = request.files["file"]
-        if file.filename:
-            filename = secure_filename(file.filename)
-            path = os.path.join(app.config['UPLOAD_DIR'], filename)
-            file.save(path)
-            return f"Uploaded: {filename}"
+        files = request.files.getlist("file")
+        uploaded_files = []
+        for file in files:
+            if file.filename:
+                filename = secure_filename(file.filename)
+                path = os.path.join(app.config['UPLOAD_DIR'], filename)
+                file.save(path)
+                uploaded_files.append(filename)
+        if uploaded_files:
+            return ""
     return render_template("upload.html", message=app.config['CUSTOM_MESSAGE'])
 
 def parse_args():
