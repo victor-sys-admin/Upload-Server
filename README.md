@@ -39,12 +39,23 @@ Start the upload server locally:
 poetry run python3 -m upload_server
 ```
 
-By default, the server listens on port **8000**.
+By default, the server listens on `0.0.0.0:8000` and saves files to an `uploads` folder.
+
+You can customize the server behavior using the following CLI arguments:
+* `--port [PORT]`: Port to listen on (default: 8000)
+* `--host [HOST]`: Address to listen on (default: 0.0.0.0)
+* `--upload-dir [DIR]`: Directory to save uploaded files (default: uploads)
+* `--message [MSG]`: Custom message to display on the web page
+
+Example:
+```sh
+poetry run python3 -m upload_server --port 9000 --upload-dir custom_folder --message "My Upload Server"
+```
 
 Open the server URL from your phone browser using the host’s local IP address:
 
 ```
-http://<host-ip>:8000
+http://<host-ip>:<host-port>
 ```
 
 ### Firewall note
@@ -108,6 +119,7 @@ poetry run coverage html
 * This server is intended for **local network use only**
 * No authentication or encryption is enabled by default
 * Do not expose this service to public networks without additional security measures
+* Filenames are automatically sanitized to prevent path traversal attacks.
 
 ---
 
@@ -120,10 +132,10 @@ poetry run coverage html
 
 ## Security Note: Binding to `0.0.0.0`
 
-The application explicitly binds to all network interfaces:
+The application explicitly defaults to binding to all network interfaces for convenience:
 
 ```python
-app.run(host="0.0.0.0", port=8000)  # nosec
+parser.add_argument("--host", type=str, default="0.0.0.0",  # nosec B104
 ```
 
 This triggers a Bandit warning (`B104: hardcoded_bind_all_interfaces`) because binding to `0.0.0.0` can expose a service to unintended networks.
@@ -131,7 +143,7 @@ This triggers a Bandit warning (`B104: hardcoded_bind_all_interfaces`) because b
 ### Why this is intentional
 
 This server is designed to receive files from a **mobile device on the same local network**.
-Binding to `0.0.0.0` is required so the service is reachable from other devices (e.g. a phone) and not limited to `localhost`.
+Defaulting to `0.0.0.0` is required so the service is reachable from other devices (e.g. a phone) out-of-the-box and not limited to `localhost`.
 
 Binding only to `127.0.0.1` would prevent access from external devices and break the primary use case.
 
@@ -146,9 +158,9 @@ Binding only to `127.0.0.1` would prevent access from external devices and break
 * Users should **run this server only on trusted local networks**
 * Firewall rules should restrict access as needed
 * The server **must not be exposed to the public internet**
-* Advanced users may override the bind address if required
+* Advanced users can override the bind address using the `--host` CLI argument (e.g., `--host 127.0.0.1`) if they want strict isolation.
 
-The Bandit warning is therefore explicitly suppressed using `# nosec`, as this behavior is **by design and documented**.
+The Bandit warning is therefore explicitly suppressed using `# nosec B104`, as this behavior is **by design and documented**.
 
 ---
 
